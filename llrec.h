@@ -83,6 +83,22 @@ Node* llfilter(Node* head, Comp pred)
     //*********************************************
     // Provide your implementation below
     //*********************************************
+    if (head == nullptr) {
+        return nullptr;
+    }
+
+    // Recursively filter the rest first
+    Node* rest = llfilter(head->next, pred);
+
+    if (pred(head->val)) {
+        // This node should be removed: delete it and return the filtered tail
+        delete head;
+        return rest;
+    } else {
+        // Keep this node and reconnect to the already-filtered tail
+        head->next = rest;
+        return head;
+    }    
 
 
 }
