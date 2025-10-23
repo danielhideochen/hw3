@@ -2,6 +2,7 @@
 #define HEAP_H
 #include <functional>
 #include <stdexcept>
+#include<vector>
 
 template <typename T, typename PComparator = std::less<T> >
 class Heap
@@ -146,6 +147,38 @@ void Heap<T, PComparator>::heapify(size_t idx)
         std::swap(data_[idx], data_[best]);
         heapify(best);
     }
+}
+
+// ctor
+template <typename T, typename PComparator>
+Heap<T,PComparator>::Heap(int m, PComparator c)
+  : data_(), m_(m), comp_(c)
+{
+  if (m_ < 2) {
+    throw std::invalid_argument("Heap arity must be >= 2");
+  }
+}
+
+// push
+template <typename T, typename PComparator>
+void Heap<T,PComparator>::push(const T& item)
+{
+  data_.push_back(item);
+  trickleUp(data_.size() - 1);
+}
+
+// empty
+template <typename T, typename PComparator>
+bool Heap<T,PComparator>::empty() const
+{
+  return data_.empty();
+}
+
+// size
+template <typename T, typename PComparator>
+size_t Heap<T,PComparator>::size() const
+{
+  return data_.size();
 }
 
 
