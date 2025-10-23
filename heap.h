@@ -61,7 +61,12 @@ public:
 
 private:
   /// Add whatever helper functions and data members you need below
+    std::vector<T> data_;
+    int m_;
+    PComparator comp_;
 
+    void trickleUp(size_t idx);
+    void heapify(size_t idx);
 
 
 
@@ -78,6 +83,8 @@ T const & Heap<T,PComparator>::top() const
   // Here we use exceptions to handle the case of trying
   // to access the top element of an empty heap
   if(empty()){
+    throw std::underflow_error("top() called on empty heap");
+
     // ================================
     // throw the appropriate exception
     // ================================
@@ -87,7 +94,7 @@ T const & Heap<T,PComparator>::top() const
   // If we get here we know the heap has at least 1 item
   // Add code to return the top element
 
-
+  return data_.front();
 
 }
 
@@ -101,13 +108,46 @@ void Heap<T,PComparator>::pop()
     // ================================
     // throw the appropriate exception
     // ================================
+    throw std::underflow_error("pop() called on empty heap");
 
 
   }
+  std::swap(data_.front(), data_.back());
+  data_.pop_back();
 
-
+  if (!empty()) {
+      heapify(0);
+  }
 
 }
+
+template <typename T, typename PComparator>
+void Heap<T, PComparator>::trickleUp(size_t idx)
+{
+    if (idx == 0) return;
+    size_t parent = (idx - 1) / m_;
+    if (comp_(data_[idx], data_[parent])) {
+        std::swap(data_[idx], data_[parent]);
+        trickleUp(parent);
+    }
+}
+
+template <typename T, typename PComparator>
+void Heap<T, PComparator>::heapify(size_t idx)
+{
+    size_t best = idx;
+    for (int i = 1; i <= m_; i++) {
+        size_t child = m_ * idx + i;
+        if (child < data_.size() && comp_(data_[child], data_[best])) {
+            best = child;
+        }
+    }
+    if (best != idx) {
+        std::swap(data_[idx], data_[best]);
+        heapify(best);
+    }
+}
+
 
 
 
