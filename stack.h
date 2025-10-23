@@ -9,32 +9,34 @@ template <typename T>
 class Stack 
 {
 public:
-  Stack() = default;
-  ~Stack() = default;
+    Stack() = default;
+    ~Stack() = default;
 
-  size_t size() const {
-    return static_cast<const std::vector<T>&>(*this).size();
-  }
+    size_t size() const {
+        return Base::size();
+    }
 
-  bool empty() const {
-    return static_cast<const std::vector<T>&>(*this).empty();
-  }
+    bool empty() const {
+        return Base::empty();
+    }
 
-  void push(const T& item) {
-    static_cast<std::vector<T>&>(*this).push_back(item);
-  }
+    void push(const T& item) {
+        Base::push_back(item);
+    }
 
-  void pop() {
-    auto& v = static_cast<std::vector<T>&>(*this);
-    if (v.empty()) throw std::underflow_error("pop() on empty stack");
-    v.pop_back();
-  }
+    void pop() {
+        if (Base::empty()) {
+            throw std::underflow_error("pop() on empty stack");
+        }
+        Base::pop_back();
+    }
 
-  const T& top() const {
-    const auto& v = static_cast<const std::vector<T>&>(*this);
-    if (v.empty()) throw std::underflow_error("top() on empty stack");
-    return v.back();
-  }
+    const T& top() const {
+        if (Base::empty()) {
+            throw std::underflow_error("top() on empty stack");
+        }
+        return Base::back();
+    }
 };
 
 
