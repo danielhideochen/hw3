@@ -6,13 +6,6 @@
 #include "event.h"
 #include "gate.h"
 
-struct EventLess {
-  bool operator()(const Event* a, const Event* b) const {
-    if (a->time != b->time) return a->time < b->time;
-    // tie-breaker (stable-ish): smaller wire id first
-    return a->wire->getId() < b->wire->getId();
-  }
-};
 
 class Circuit 
 {
