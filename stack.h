@@ -3,40 +3,46 @@
 
 #include <vector>
 #include <stdexcept>
+#include <cstddef>
 
 // Use inheritance from std::vector (choose public/private) as appropriate
 template <typename T>
-class Stack 
+class Stack : private std::vector<T>
 {
 public:
-    Stack() = default;
-    ~Stack() = default;
+  Stack() = default;
+  ~Stack() = default;
 
-    size_t size() const {
-        return Base::size();
-    }
+  size_t size() const {
+    const std::vector<T>& v = *this; 
+    return v.size();
+  }
 
-    bool empty() const {
-        return Base::empty();
-    }
+  bool empty() const {
+    const std::vector<T>& v = *this;
+    return v.empty();
+  }
 
-    void push(const T& item) {
-        Base::push_back(item);
-    }
+  void push(const T& item) {
+    std::vector<T>& v = *this;    
+    v.push_back(item);
+  }
 
-    void pop() {
-        if (Base::empty()) {
-            throw std::underflow_error("pop() on empty stack");
-        }
-        Base::pop_back();
+  void pop() {
+    std::vector<T>& v = *this;
+    if (v.empty()) {
+      throw std::underflow_error("pop() on empty stack");
     }
+    v.pop_back();
+  }
 
-    const T& top() const {
-        if (Base::empty()) {
-            throw std::underflow_error("top() on empty stack");
-        }
-        return Base::back();
+  const T& top() const {
+    const std::vector<T>& v = *this;
+    if (v.empty()) {
+      throw std::underflow_error("top() on empty stack");
     }
+    return v.back();
+  }
 };
 
 
