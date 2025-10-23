@@ -21,7 +21,7 @@ public:
   * @brief Destroy the Heap object
   * 
   */
-  ~Heap();
+  ~Heap() = default;
 
   /**
    * @brief Push an item to the heap

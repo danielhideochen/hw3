@@ -10,7 +10,8 @@ class Gate
 {
     public:
         Gate(int, Wire*);
-        virtual ~Gate();
+        Gate() : m_output(nullptr), m_delay(0), m_current_state('U') {}
+        virtual ~Gate() = default;
         virtual Event* update(uint64_t) =0;
         void wireInput(unsigned int,Wire*);
         
@@ -33,6 +34,12 @@ class Or2Gate : public Gate
   public:
       Or2Gate(Wire*, Wire*, Wire*);
       Event* update(uint64_t);
+};
+
+class NotGate : public Gate {
+public:
+  NotGate(Wire* in, Wire* out);       
+  Event* update(uint64_t current_time) override;
 };
 
 #endif

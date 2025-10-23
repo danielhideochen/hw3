@@ -88,3 +88,28 @@ Event* Or2Gate::update(uint64_t current_time)
 	}
   return e;
 }
+
+NotGate::NotGate(Wire* in, Wire* out)
+  : Gate()               // <-- explicitly call base default ctor
+{
+  m_inputs.push_back(in);
+  m_output = out;
+  m_delay = 0;
+  m_current_state = 'U';
+}
+
+
+Event* NotGate::update(uint64_t current_time)
+{
+    char newState;
+
+    if (m_inputs[0]->getState() == '1') newState = '0';
+    else if (m_inputs[0]->getState() == '0') newState = '1';
+    else return nullptr;  // undefined input, no output change
+
+    if (m_output->getState() != newState)
+    {
+        return new Event{current_time, m_output, newState};
+    }
+    return nullptr;
+}
