@@ -11,7 +11,7 @@ Gate::Gate(int num_inputs, Wire* output)
     
 }
 
-Gate::~Gate(){}
+//Gate::~Gate(){}
 
 void Gate::wireInput(unsigned int id, Wire* in)
 {
